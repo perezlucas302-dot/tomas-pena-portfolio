@@ -1,0 +1,7 @@
+# Videos crudos — nunca subir esto al repo, son demasiado pesados
+raw/
+web/
+
+# Sistema
+.DS_Store
+Thumbs.db

@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tomás Peña — Editor Audiovisual</title>
+  <meta name="description" content="Tomás Peña, editor audiovisual y filmmaker en Paraná, Entre Ríos. Edición de video, color grading, dirección creativa y producción.">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- ============ NAV ============ -->
+  <header class="nav" id="nav">
+    <div class="wrap nav__row">
+      <a href="index.html" class="nav__brand">
+        <img src="assets/img/personal/firma-tomas-pena.png" alt="Firma de Tomás Peña">
+      </a>
+      <button class="nav__toggle" id="navToggle" aria-label="Abrir menú" aria-expanded="false">
+        <span></span><span></span>
+      </button>
+      <nav class="nav__links" id="navLinks">
+        <a href="#proyectos">Proyectos</a>
+        <a href="#servicios">Servicios</a>
+        <a href="#sobre-mi">Sobre mí</a>
+        <a href="#contacto">Contacto</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <!-- ============ HERO ============ -->
+    <section class="hero">
+      <div class="hero__stage">
+        <img class="hero__bg" src="assets/img/personal/foto-perfil.jpg" alt="Tomás Peña, editor audiovisual">
+        <div class="hero__scrim"></div>
+        <div class="hero__frame-tag"><span class="rec-dot"></span> REC</div>
+
+        <div class="wrap hero__content">
+          <h1 class="hero__name">Tomas<br>Peña</h1>
+          <div class="hero__sub">
+            <p class="hero__tagline"><span>Editor audiovisual</span><strong>Created in Argentina</strong></p>
+            <a href="#proyectos" class="hero__cta">
+              Ver trabajos
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="hero__scroll"><span class="line"></span> Scroll</div>
+    </section>
+
+    <!-- ============ PROYECTOS ============ -->
+    <section class="section" id="proyectos">
+      <div class="wrap">
+        <div class="section__head reveal">
+          <h2 class="section__title">Selected<br>Work</h2>
+          <a href="#" class="section__link">
+            Ver todos los proyectos
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </a>
+        </div>
+
+        <div class="work-grid">
+          <a href="proyectos/torre-faro.html" class="work-card reveal">
+            <div class="work-card__frame">
+              <img src="assets/img/covers/torre-faro.jpg" alt="Torre Faro — producción audiovisual">
+            </div>
+            <div class="work-card__meta">
+              <span class="work-card__title">Torre Faro</span>
+              <span class="work-card__tag">Edición</span>
+            </div>
+          </a>
+
+          <a href="proyectos/ya-vuelvo.html" class="work-card reveal">
+            <div class="work-card__frame">
+              <img src="assets/img/covers/ya-vuelvo.jpg" alt="Ya Vuelvo — producción audiovisual">
+            </div>
+            <div class="work-card__meta">
+              <span class="work-card__title">Ya Vuelvo</span>
+              <span class="work-card__tag">Edición</span>
+            </div>
+          </a>
+
+          <a href="proyectos/cayo-amarillo.html" class="work-card reveal">
+            <div class="work-card__frame">
+              <img src="assets/img/covers/cayo-amarillo.jpg" alt="Cayo Amarillo — producción audiovisual">
+            </div>
+            <div class="work-card__meta">
+              <span class="work-card__title">Cayo Amarillo</span>
+              <span class="work-card__tag">Edición</span>
+            </div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ SERVICIOS ============ -->
+    <section class="section" id="servicios">
+      <div class="wrap">
+        <div class="section__head reveal">
+          <h2 class="section__title">Servicios</h2>
+        </div>
+
+        <div class="services__list reveal">
+          <div class="service-row">
+            <span class="service-row__title">Edición de video</span>
+            <span class="service-row__desc">Edición profesional con estilo y narrativa.</span>
+            <span class="service-row__mark">01</span>
+          </div>
+          <div class="service-row">
+            <span class="service-row__title">Color grading</span>
+            <span class="service-row__desc">Corrección de color cinematográfico.</span>
+            <span class="service-row__mark">02</span>
+          </div>
+          <div class="service-row">
+            <span class="service-row__title">Director creativo</span>
+            <span class="service-row__desc">Dirección creativa para marcas y proyectos.</span>
+            <span class="service-row__mark">03</span>
+          </div>
+          <div class="service-row">
+            <span class="service-row__title">Filmmaker</span>
+            <span class="service-row__desc">Desarrollo y producción de piezas audiovisuales.</span>
+            <span class="service-row__mark">04</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ BANNER VIDEO ============ -->
+    <section class="banner reveal">
+      <video class="banner__video" autoplay muted loop playsinline>
+        <source src="assets/video/banner-web1.mp4" type="video/mp4">
+      </video>
+      <div class="banner__tag"><span class="rec-dot"></span> REC</div>
+    </section>
+
+    <!-- ============ SOBRE MÍ ============ -->
+    <section class="section" id="sobre-mi">
+      <div class="wrap">
+        <div class="about__quotes reveal">
+          <p class="about__quote about__quote--no">"Qué buen video."</p>
+          <p class="about__quote about__quote--yes">"Necesito algo así<br>para mi marca."</p>
+        </div>
+
+        <div class="about__body reveal">
+          <div class="about__stats">
+            <div><span>Nombre</span><span>Tomás Peña</span></div>
+            <div><span>Edad</span><span>22 años</span></div>
+            <div><span>Base</span><span>Paraná, Entre Ríos</span></div>
+            <div><span>Oficio</span><span>Edición &amp; dirección audiovisual</span></div>
+          </div>
+
+          <div class="about__text">
+            <p>Soy Tomás, tengo 22 años y vivo en Paraná, Entre Ríos. Hace un año empecé este camino con muchas ganas de aprender y la obsesión de hacer <strong>cada proyecto mejor que el anterior</strong>.</p>
+            <p>Todavía siento que estoy empezando. Y justamente por eso, cada trabajo es una oportunidad para superar el último.</p>
+            <p>Busco crear imágenes que no dependan de una tendencia. Que hoy llamen la atención... y <strong>dentro de unos años sigan teniendo el mismo impacto</strong>.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ CONTACTO ============ -->
+    <section class="contact" id="contacto">
+      <div class="wrap contact__center">
+        <p class="eyebrow reveal"><span class="rec-dot"></span> Disponible para nuevos proyectos</p>
+        <h2 class="contact__title" id="hablemosTitle" aria-label="Hablemos.">
+          <span class="contact__title-text"></span><span class="contact__cursor">|</span>
+        </h2>
+
+        <div class="contact__grid reveal">
+          <div class="contact__col">
+            <span class="contact__col-label">Email</span>
+            <a href="mailto:tomaslautaropena@gmail.com" class="contact__email">
+              tomaslautaropena@gmail.com
+            </a>
+          </div>
+          <div class="contact__col">
+            <span class="contact__col-label">Social</span>
+            <a href="https://instagram.com/tomyypena10" target="_blank" rel="noopener" class="contact__instagram">Instagram</a>
+          </div>
+        </div>
+
+        <div class="contact__row">
+          <span>© <span id="year"></span> Tomás Peña</span>
+          <span class="contact__clock"><span class="rec-dot"></span> Paraná, AR — <span id="clock">--:--:--</span></span>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
