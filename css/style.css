@@ -24,7 +24,7 @@
   /* Layout */
   --gutter: clamp(20px, 4vw, 64px);
   --max: 1400px;
-  --nav-h: 92px;
+  --nav-h: 84px;
 
   /* Motion */
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
@@ -146,7 +146,7 @@ button {
 }
 
 .nav__brand img {
-  height: 92px;
+  height: 68px;
   width: auto;
   display: block;
 }
@@ -364,15 +364,15 @@ button {
 @media (max-width: 900px) {
   .hero__scrim {
     background: linear-gradient(
-      to bottom,
-      rgba(11,11,10,0.05) 0%,
-      rgba(11,11,10,0.15) 55%,
-      rgba(11,11,10,0.75) 68%,
-      var(--bg) 78%,
-      var(--bg) 100%
+      to top,
+      var(--bg) 0%,
+      var(--bg) 28%,
+      rgba(11,11,10,0.82) 42%,
+      rgba(11,11,10,0.35) 58%,
+      rgba(11,11,10,0.05) 75%
     );
   }
-  .hero__bg { object-position: center top; }
+  .hero__bg { object-fit: cover; object-position: center 18%; }
   .hero__scroll { display: none; }
 }
 
