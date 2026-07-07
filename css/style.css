@@ -244,6 +244,17 @@ button {
   filter: grayscale(1) contrast(1.08) brightness(0.9);
 }
 
+.hero__bg--mobile { display: none; }
+
+@media (max-width: 900px) {
+  .hero__bg--desktop { display: none; }
+  .hero__bg--mobile {
+    display: block;
+    object-fit: cover;
+    object-position: center 18%;
+  }
+}
+
 .hero__scrim {
   position: absolute;
   inset: 0;
@@ -372,7 +383,6 @@ button {
       rgba(11,11,10,0.05) 75%
     );
   }
-  .hero__bg { object-fit: cover; object-position: center 18%; }
   .hero__scroll { display: none; }
 }
 
