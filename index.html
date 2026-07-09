@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tomás Peña — Editor Audiovisual</title>
-  <meta name="description" content="Tomás Peña, editor audiovisual y filmmaker en Paraná, Entre Ríos. Edición de video, color grading, dirección creativa y producción.">
+  <title>Tomas Peña — Editor Audiovisual</title>
+  <meta name="description" content="Tomas Peña, editor audiovisual y filmmaker en Paraná, Entre Ríos. Edición de video, color grading, dirección creativa y producción.">
   <link rel="icon" href="assets/img/favicon/favicon.ico" sizes="any">
   <link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="assets/img/favicon/favicon-16x16.png">
@@ -17,7 +17,7 @@
   <header class="nav" id="nav">
     <div class="wrap nav__row">
       <a href="/" class="nav__brand">
-        <img src="assets/img/personal/firma-tomas-pena.png" alt="Firma de Tomás Peña">
+        <img src="assets/img/personal/firma-tomas-pena.png" alt="Firma de Tomas Peña">
       </a>
       <button class="nav__toggle" id="navToggle" aria-label="Abrir menú" aria-expanded="false">
         <span></span><span></span>
@@ -59,13 +59,19 @@
       <div class="wrap">
         <div class="section__head reveal">
           <h2 class="section__title">Selected<br>Work</h2>
-          <a href="#" class="section__link">
-            Ver todos los proyectos
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-          </a>
         </div>
 
         <div class="work-grid">
+          <a href="/proyectos/cayo-amarillo" class="work-card reveal">
+            <div class="work-card__frame">
+              <img src="assets/img/covers/cayo-amarillo.jpg" alt="Cayo Amarillo — producción audiovisual">
+            </div>
+            <div class="work-card__meta">
+              <span class="work-card__title">Cayo Amarillo</span>
+              <span class="work-card__tag">Edición</span>
+            </div>
+          </a>
+
           <a href="/proyectos/torre-faro" class="work-card reveal">
             <div class="work-card__frame">
               <img src="assets/img/covers/torre-faro.jpg" alt="Torre Faro — producción audiovisual">
@@ -86,13 +92,15 @@
             </div>
           </a>
 
-          <a href="/proyectos/cayo-amarillo" class="work-card reveal">
+          <!-- 4ta card: teaser difuminado. El href="#" es temporal hasta que
+               armemos una página con el listado completo de proyectos. -->
+          <a href="#" class="work-card work-card--teaser reveal">
             <div class="work-card__frame">
-              <img src="assets/img/covers/cayo-amarillo.jpg" alt="Cayo Amarillo — producción audiovisual">
+              <img src="assets/img/covers/torre-faro.jpg" alt="Más proyectos próximamente">
             </div>
-            <div class="work-card__meta">
-              <span class="work-card__title">Cayo Amarillo</span>
-              <span class="work-card__tag">Edición</span>
+            <div class="work-card__teaser-cta">
+              <span>Ver más</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
             </div>
           </a>
         </div>
