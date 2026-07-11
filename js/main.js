@@ -78,6 +78,24 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  /* ---- Autoplay Videos on Scroll ---- */
+  const videos = document.querySelectorAll('.video-on-scroll');
+  if ('IntersectionObserver' in window && videos.length) {
+    const videoObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          // El video entra en pantalla: intenta darle play
+          entry.target.play().catch(err => console.warn("Auto-play prevenido por el navegador:", err));
+        } else {
+          // El video sale de la pantalla: lo pausa
+          entry.target.pause();
+        }
+      });
+    }, { threshold: 0.5 }); // 0.5 = Arranca cuando el 50% del video es visible
+
+    videos.forEach(video => videoObserver.observe(video));
+  }
+
   /* ---- Live clock: Paraná / Buenos Aires (America/Argentina/Cordoba, UTC-3) ---- */
   const clockEl = document.getElementById('clock');
   const yearEl = document.getElementById('year');

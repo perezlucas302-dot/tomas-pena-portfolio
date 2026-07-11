@@ -3,21 +3,11 @@
 # compress-videos.sh
 # Comprime videos a un MP4 liviano y compatible para la web.
 #
-# USO — TODOS de una (comprime los 4 que encuentre en raw/):
+# USO — TODOS de una (comprime todos los archivos en raw/):
 #   ./compress-videos.sh
 #
-# USO — SOLO UNO (recomendado si ya tenés el resto comprimido
-# y solo agregaste/cambiaste un video puntual):
-#   ./compress-videos.sh cayo-amarillo
-#   ./compress-videos.sh torre-faro
-#   ./compress-videos.sh ya-vuelvo
-#   ./compress-videos.sh banner-web1
-#
-# Los nombres esperados en ./raw son:
-#   raw/torre-faro.mov
-#   raw/ya-vuelvo.mov
-#   raw/cayo-amarillo.mp4
-#   raw/banner-web1.mov
+# USO — SOLO UNO (recomendado si solo agregaste/cambiaste uno):
+#   ./compress-videos.sh mi-video.mp4
 #
 # Requiere ffmpeg instalado:
 #   sudo apt update && sudo apt install ffmpeg
@@ -55,29 +45,33 @@ compress () {
   fi
 }
 
-# Mapa: alias que escribís en la terminal -> archivo real en raw/
-run_one () {
-  case "$1" in
-    torre-faro)    compress "torre-faro.mov"    "torre-faro" ;;
-    ya-vuelvo)     compress "ya-vuelvo.mov"      "ya-vuelvo" ;;
-    cayo-amarillo) compress "cayo-amarillo.mp4"  "cayo-amarillo" ;;
-    banner-web1)   compress "banner-web1.mov"    "banner-web1" ;;
-    *)
-      echo "⚠ No reconozco '$1'. Opciones válidas: torre-faro, ya-vuelvo, cayo-amarillo, banner-web1"
-      exit 1
-      ;;
-  esac
-}
+# ============================================================
+# Lógica de ejecución
+# ============================================================
 
-if [ -n "$1" ]; then
-  # Se pasó un nombre puntual -> comprimir solo ese
-  run_one "$1"
+if [ $# -eq 0 ]; then
+  # Si no se pasan argumentos, procesar todos los archivos en raw/
+  echo "Buscando archivos en ./$RAW_DIR para comprimir..."
+  
+  # Fijarse si la carpeta raw está vacía
+  if [ -z "$(ls -A $RAW_DIR 2>/dev/null)" ]; then
+    echo "La carpeta $RAW_DIR está vacía o no existe."
+    exit 0
+  fi
+
+  for filepath in "$RAW_DIR"/*; do
+    # Validar que sea un archivo (ignorar subcarpetas por si acaso)
+    if [ -f "$filepath" ]; then
+      filename=$(basename -- "$filepath") # Obtiene ej: "video.mov"
+      name="${filename%.*}"               # Le quita la extensión, ej: "video"
+      compress "$filename" "$name"
+    fi
+  done
 else
-  # Sin argumentos -> comprimir los 4
-  compress "torre-faro.mov"    "torre-faro"
-  compress "ya-vuelvo.mov"     "ya-vuelvo"
-  compress "cayo-amarillo.mp4" "cayo-amarillo"
-  compress "banner-web1.mov"   "banner-web1"
+  # Si se pasa un argumento, procesar solo ese archivo
+  input_file="$1"
+  name="${input_file%.*}"
+  compress "$input_file" "$name"
 fi
 
 echo ""
