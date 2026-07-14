@@ -804,6 +804,40 @@ button {
 }
 
 /* ============================================
+   COMING SOON (Shop)
+   ============================================ */
+.coming-soon {
+  min-height: calc(100svh - var(--nav-h));
+  display: flex;
+  align-items: center;
+  padding: calc(var(--nav-h) + 40px) 0 80px;
+}
+
+.coming-soon__center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.coming-soon__title {
+  font-family: var(--f-display);
+  font-weight: 900;
+  text-transform: uppercase;
+  line-height: 0.9;
+  font-size: clamp(56px, 12vw, 140px);
+  margin: 20px 0 20px;
+}
+
+.coming-soon__text {
+  max-width: 480px;
+  color: var(--ink-muted);
+  font-size: clamp(15px, 1.6vw, 17px);
+  line-height: 1.6;
+  margin-bottom: 40px;
+}
+
+/* ============================================
    PROJECT DETAIL PAGE
    ============================================ */
 .project-hero {
@@ -832,6 +866,17 @@ button {
   text-transform: uppercase;
   line-height: 0.9;
   font-size: clamp(48px, 9vw, 120px);
+  margin-bottom: 28px;
+}
+
+.project-hero__subtitle {
+  font-family: var(--f-mono);
+  font-weight: 400;
+  font-size: 14px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+  margin-top: -20px;
   margin-bottom: 28px;
 }
 
