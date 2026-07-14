@@ -942,8 +942,15 @@ button {
 .project-media__note {
   margin-top: 16px;
   font-family: var(--f-mono);
-  font-size: 12px;
-  color: var(--ink-faint);
+  font-size: 14px;
+  letter-spacing: 0.04em;
+  color: var(--ink);
+}
+
+.project-media__note a {
+  color: var(--ink);
+  text-decoration: underline;
+  text-underline-offset: 4px;
 }
 
 .project-nav {
