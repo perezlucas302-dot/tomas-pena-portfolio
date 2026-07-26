@@ -589,15 +589,6 @@ button {
   animation: marquee-scroll 38s linear infinite;
 }
 
-/* Solo pausa al hover en dispositivos con mouse de verdad: en touch,
-   el :hover puede quedar "pegado" tras un tap y la pasarela parece
-   frenada para siempre. */
-@media (hover: hover) and (pointer: fine) {
-  .marquee:hover .marquee__track {
-    animation-play-state: paused;
-  }
-}
-
 .marquee__group {
   display: flex;
   align-items: center;
@@ -606,7 +597,7 @@ button {
 
 .marquee__item {
   flex-shrink: 0;
-  width: 230px;
+  width: 400px;
   aspect-ratio: 4/3;
   margin: 0 16px;
   overflow: hidden;
