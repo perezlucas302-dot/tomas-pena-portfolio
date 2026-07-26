@@ -27,7 +27,7 @@
         <a href="#servicios">Servicios</a>
         <a href="#sobre-mi">Sobre mí</a>
         <a href="#contacto">Contacto</a>
-        <a href="/proyectos/shop">Shop</a>
+        <a href="/proyectos/shop.html">Shop</a>
       </nav>
     </div>
   </header>
@@ -114,26 +114,88 @@
         </div>
 
         <div class="services__list reveal">
-          <div class="service-row">
-            <span class="service-row__title">Edición de video</span>
-            <span class="service-row__desc">Edición profesional con estilo y narrativa.</span>
-            <span class="service-row__mark">01</span>
+
+          <div class="service-row" id="servicio-edicion">
+            <button class="service-row__trigger" type="button" aria-expanded="false" aria-controls="panel-edicion">
+              <span class="service-row__title">Edición de video</span>
+              <span class="service-row__desc">Edición profesional con estilo y narrativa.</span>
+              <span class="service-row__mark">01</span>
+              <svg class="service-row__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+            </button>
+            <div class="service-row__panel" id="panel-edicion">
+              <div class="service-row__panel-content">
+                <div class="service-row__media">
+                       <video muted loop playsinline preload="none">
+                         <source src="assets/img/services/edicion-de-video-web.mp4" type="video/mp4">
+                       </video>
+                     </div>
+                <p class="service-row__blurb">Cada corte, cada transición y cada tiempo muerto están pensados para sostener la atención de principio a fin — sin relleno, sin bajones de ritmo.</p>
+              </div>
+            </div>
           </div>
-          <div class="service-row">
-            <span class="service-row__title">Color grading</span>
-            <span class="service-row__desc">Corrección de color cinematográfico.</span>
-            <span class="service-row__mark">02</span>
+
+          <div class="service-row" id="servicio-color">
+            <button class="service-row__trigger" type="button" aria-expanded="false" aria-controls="panel-color">
+              <span class="service-row__title">Color grading</span>
+              <span class="service-row__desc">Corrección de color cinematográfico.</span>
+              <span class="service-row__mark">02</span>
+              <svg class="service-row__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+            </button>
+            <div class="service-row__panel" id="panel-color">
+              <div class="service-row__panel-content">
+                <div class="compare" data-compare>
+                  <img class="compare__img compare__img--after" src="assets/img/services/color-grading-after.jpg" alt="Con color grading — Tomas Peña" draggable="false">
+                  <img class="compare__img compare__img--before" src="assets/img/services/color-grading-before.jpg" alt="Sin color grading — Tomas Peña" draggable="false">
+                  <div class="compare__handle">
+                    <span class="compare__handle-bar"></span>
+                    <span class="compare__handle-grip">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 5l-6 7 6 7M16 5l6 7-6 7"/></svg>
+                    </span>
+                  </div>
+                  <span class="compare__tag compare__tag--before">Sin grading</span>
+                  <span class="compare__tag compare__tag--after">Con grading</span>
+                </div>
+                <p class="service-row__blurb">Mismo plano, otra atmósfera. El grading no es un filtro: es la diferencia entre un video que se ve bien y uno que se siente cine. Arrastrá para comparar.</p>
+              </div>
+            </div>
           </div>
-          <div class="service-row">
-            <span class="service-row__title">Director creativo</span>
-            <span class="service-row__desc">Dirección creativa para marcas y proyectos.</span>
-            <span class="service-row__mark">03</span>
+
+          <div class="service-row" id="servicio-director">
+            <button class="service-row__trigger" type="button" aria-expanded="false" aria-controls="panel-director">
+              <span class="service-row__title">Director creativo</span>
+              <span class="service-row__desc">Dirección creativa para marcas y proyectos.</span>
+              <span class="service-row__mark">03</span>
+              <svg class="service-row__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+            </button>
+            <div class="service-row__panel" id="panel-director">
+              <div class="service-row__panel-content">
+               <div class="service-row__media">
+                       <img src="assets/img/services/director-creativo.jpg" alt="Director creativo — Tomas Peña">
+                     </div>
+                <p class="service-row__blurb">Antes de prender la cámara ya está resuelto el concepto, la estética y el mensaje — para que la marca no dependa de la improvisación.</p>
+              </div>
+            </div>
           </div>
-          <div class="service-row">
-            <span class="service-row__title">Filmmaker</span>
-            <span class="service-row__desc">Desarrollo y producción de piezas audiovisuales.</span>
-            <span class="service-row__mark">04</span>
+
+          <div class="service-row" id="servicio-filmmaker">
+            <button class="service-row__trigger" type="button" aria-expanded="false" aria-controls="panel-filmmaker">
+              <span class="service-row__title">Filmmaker</span>
+              <span class="service-row__desc">Desarrollo y producción de piezas audiovisuales.</span>
+              <span class="service-row__mark">04</span>
+              <svg class="service-row__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+            </button>
+            <div class="service-row__panel" id="panel-filmmaker">
+              <div class="service-row__panel-content">
+                     <div class="service-row__media">
+                       <video muted loop playsinline preload="none">
+                         <source src="assets/img/services/filmmaker-web.mp4" type="video/mp4">
+                       </video>
+                     </div>
+                <p class="service-row__blurb">Desde la idea hasta la entrega final: guión, rodaje, dirección de arte y postproducción bajo una misma mirada.</p>
+              </div>
+            </div>
           </div>
+
         </div>
       </div>
     </section>
@@ -167,6 +229,46 @@
             <p>Todavía siento que estoy empezando. Y justamente por eso, cada trabajo es una oportunidad para superar el último.</p>
             <p>Busco crear imágenes que no dependan de una tendencia. Que hoy llamen la atención... y <strong>dentro de unos años sigan teniendo el mismo impacto</strong>.</p>
           </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ PASARELA DE PROYECTOS ============ -->
+    <section class="marquee reveal" aria-label="Portadas de proyectos">
+      <div class="marquee__track">
+        <div class="marquee__group">
+          <div class="marquee__item"><img src="assets/img/covers/heredero-gin.jpg" alt="Heredero 0.0 Nuevo Gin" loading="lazy"></div>
+          <div class="marquee__item"><img src="assets/img/covers/luzu-trailer.jpg" alt="Luzu" loading="lazy"></div>
+          <div class="marquee__item"><img src="assets/img/covers/fernet-branca.jpg" alt="Fernet Branca" loading="lazy"></div>
+          <div class="marquee__item"><img src="assets/img/covers/adrian-barraza.jpg" alt="Adrián Barraza" loading="lazy"></div>
+          <div class="marquee__item"><img src="assets/img/covers/torre-faro.jpg" alt="Torre Faro" loading="lazy"></div>
+          <div class="marquee__item"><img src="assets/img/covers/cayo-nueva-burger-churry.jpg" alt="Cayó Amarillo" loading="lazy"></div>
+          <div class="marquee__item"><img src="assets/img/covers/premios-idolos.jpg" alt="Premios Ídolos 2025 x Heredero Gin" loading="lazy"></div>
+          <div class="marquee__item"><img src="assets/img/covers/ya-vuelvo.jpg" alt="Ya Vuelvo" loading="lazy"></div>
+          <div class="marquee__item"><img src="assets/img/covers/heredero-ny.jpg" alt="Presentación Heredero NY 2026" loading="lazy"></div>
+          <div class="marquee__item"><img src="assets/img/covers/cayo-nueva-burger-luis.jpg" alt="Cayó Amarillo" loading="lazy"></div>
+          <div class="marquee__item"><img src="assets/img/covers/ccs-expocon.jpg" alt="CCS Expocon 2026" loading="lazy"></div>
+          <div class="marquee__item"><img src="assets/img/covers/suzuki-parana.jpg" alt="Suzuki Paraná" loading="lazy"></div>
+          <div class="marquee__item"><img src="assets/img/covers/cayo-amarillo.jpg" alt="Cayo Amarillo" loading="lazy"></div>
+          <div class="marquee__item"><img src="assets/img/covers/grupo-set-latam.jpg" alt="Grupo Set Latam" loading="lazy"></div>
+          <div class="marquee__item"><img src="assets/img/covers/luchitossj.jpg" alt="Luchito SSJ" loading="lazy"></div>
+        </div>
+        <div class="marquee__group" aria-hidden="true">
+          <div class="marquee__item"><img src="assets/img/covers/heredero-gin.jpg" alt="" loading="lazy"></div>
+          <div class="marquee__item"><img src="assets/img/covers/luzu-trailer.jpg" alt="" loading="lazy"></div>
+          <div class="marquee__item"><img src="assets/img/covers/fernet-branca.jpg" alt="" loading="lazy"></div>
+          <div class="marquee__item"><img src="assets/img/covers/adrian-barraza.jpg" alt="" loading="lazy"></div>
+          <div class="marquee__item"><img src="assets/img/covers/torre-faro.jpg" alt="" loading="lazy"></div>
+          <div class="marquee__item"><img src="assets/img/covers/cayo-nueva-burger-churry.jpg" alt="" loading="lazy"></div>
+          <div class="marquee__item"><img src="assets/img/covers/premios-idolos.jpg" alt="" loading="lazy"></div>
+          <div class="marquee__item"><img src="assets/img/covers/ya-vuelvo.jpg" alt="" loading="lazy"></div>
+          <div class="marquee__item"><img src="assets/img/covers/heredero-ny.jpg" alt="" loading="lazy"></div>
+          <div class="marquee__item"><img src="assets/img/covers/cayo-nueva-burger-luis.jpg" alt="" loading="lazy"></div>
+          <div class="marquee__item"><img src="assets/img/covers/ccs-expocon.jpg" alt="" loading="lazy"></div>
+          <div class="marquee__item"><img src="assets/img/covers/suzuki-parana.jpg" alt="" loading="lazy"></div>
+          <div class="marquee__item"><img src="assets/img/covers/cayo-amarillo.jpg" alt="" loading="lazy"></div>
+          <div class="marquee__item"><img src="assets/img/covers/grupo-set-latam.jpg" alt="" loading="lazy"></div>
+          <div class="marquee__item"><img src="assets/img/covers/luchitossj.jpg" alt="" loading="lazy"></div>
         </div>
       </div>
     </section>

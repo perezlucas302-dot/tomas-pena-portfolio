@@ -119,3 +119,88 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
 });
+
+/* ============================================
+   SERVICIOS — acordeón (tap/click, uno abierto a la vez)
+   ============================================ */
+(function () {
+  const rows = document.querySelectorAll('.service-row');
+  if (!rows.length) return;
+
+  const closeRow = (row) => {
+    row.classList.remove('is-open');
+    const t = row.querySelector('.service-row__trigger');
+    if (t) t.setAttribute('aria-expanded', 'false');
+    const panel = row.querySelector('.service-row__panel');
+    if (panel) panel.style.maxHeight = '0px';
+    const v = row.querySelector('video');
+    if (v) v.pause();
+  };
+
+  const openRow = (row) => {
+    row.classList.add('is-open');
+    const t = row.querySelector('.service-row__trigger');
+    if (t) t.setAttribute('aria-expanded', 'true');
+    const panel = row.querySelector('.service-row__panel');
+    const content = row.querySelector('.service-row__panel-content');
+    if (panel && content) panel.style.maxHeight = content.offsetHeight + 'px';
+    const video = row.querySelector('video');
+    if (video) {
+      video.preload = 'auto';
+      video.play().catch(() => {});
+    }
+  };
+
+  rows.forEach((row) => {
+    const trigger = row.querySelector('.service-row__trigger');
+    if (!trigger) return;
+
+    trigger.addEventListener('click', () => {
+      const wasOpen = row.classList.contains('is-open');
+      rows.forEach(closeRow);
+      if (!wasOpen) openRow(row);
+    });
+  });
+
+  // Si la ventana cambia de tamaño con un panel abierto, recalcula el alto
+  // (evita que el texto quede cortado si el reflow cambia la altura del contenido).
+  window.addEventListener('resize', () => {
+    const openRowEl = document.querySelector('.service-row.is-open');
+    if (!openRowEl) return;
+    const panel = openRowEl.querySelector('.service-row__panel');
+    const content = openRowEl.querySelector('.service-row__panel-content');
+    if (panel && content) panel.style.maxHeight = content.offsetHeight + 'px';
+  });
+})();
+
+/* ============================================
+   COLOR GRADING — comparador antes/después (drag)
+   ============================================ */
+(function () {
+  const compares = document.querySelectorAll('[data-compare]');
+  if (!compares.length) return;
+
+  compares.forEach((el) => {
+    const handle = el.querySelector('.compare__handle');
+    let dragging = false;
+
+    const setPos = (clientX) => {
+      const rect = el.getBoundingClientRect();
+      let pct = ((clientX - rect.left) / rect.width) * 100;
+      pct = Math.min(100, Math.max(0, pct));
+      el.style.setProperty('--pos', pct + '%');
+      if (handle) handle.style.left = pct + '%';
+    };
+
+    el.addEventListener('pointerdown', (e) => {
+      dragging = true;
+      el.setPointerCapture(e.pointerId);
+      setPos(e.clientX);
+    });
+    el.addEventListener('pointermove', (e) => {
+      if (dragging) setPos(e.clientX);
+    });
+    el.addEventListener('pointerup', () => { dragging = false; });
+    el.addEventListener('pointercancel', () => { dragging = false; });
+  });
+})();
