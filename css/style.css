@@ -817,6 +817,11 @@ button {
   font-size: clamp(14px, 1.5vw, 16px);
   line-height: 1.6;
 }
+.service-row__blurb strong,
+.service-row__desc strong {
+  color: var(--ink);
+  font-weight: 700;
+}
 
 @media (max-width: 700px) {
   .service-row__trigger {
