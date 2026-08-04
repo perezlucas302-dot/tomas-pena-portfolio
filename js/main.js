@@ -47,6 +47,96 @@ document.addEventListener('DOMContentLoaded', () => {
     revealEls.forEach(el => el.classList.add('is-visible'));
   }
 
+  /* ---- View Transitions: conecta cada thumbnail con su página de proyecto ----
+     Le da el mismo view-transition-name a la card (en home / listado) y al
+     frame de media (en la página del proyecto), para que el navegador anime
+     una "crece hacia" la otra en vez de solo cross-fadear todo el documento.
+     Si el navegador no soporta View Transitions, esto no hace nada visible. */
+  if ('startViewTransition' in document) {
+    const slugFromHref = (href) => {
+      try {
+        return new URL(href, location.href).pathname.split('/').pop().replace('.html', '');
+      } catch { return null; }
+    };
+
+    document.querySelectorAll('.work-card:not(.work-card--teaser)').forEach((card) => {
+      const slug = slugFromHref(card.getAttribute('href'));
+      const frame = card.querySelector('.work-card__frame');
+      if (slug && frame) frame.style.viewTransitionName = `vt-${slug}`;
+    });
+
+    const mediaFrame = document.querySelector('.project-media__frame');
+    if (mediaFrame) {
+      const slug = location.pathname.split('/').pop().replace('.html', '');
+      if (slug) mediaFrame.style.viewTransitionName = `vt-${slug}`;
+    }
+  }
+
+  /* ---- Work cards: cursor "REC" + preview de video al pasar el mouse (desktop) ----
+     Un solo cursor custom (círculo con el rec-dot + "Ver") sigue al mouse y
+     se activa al entrar a una card; al mismo tiempo, crea el <video> liviano
+     de preview y lo cruza con la portada. Todo comparte el mismo listener
+     de hover para no duplicar trabajo. En touch/mobile no se activa nada de
+     esto: se queda con la imagen estática y el cursor normal del sistema. */
+  const canHoverVideo = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+  if (canHoverVideo) {
+    const cursor = document.createElement('div');
+    cursor.className = 'cursor-rec';
+    cursor.innerHTML = '<span class="rec-dot"></span><span class="cursor-rec__label">Ver</span>';
+    document.body.appendChild(cursor);
+
+    let cx = -100, cy = -100, cursorScale = 0.6;
+    const renderCursor = () => {
+      cursor.style.transform = `translate3d(${cx - 34}px, ${cy - 34}px, 0) scale(${cursorScale})`;
+    };
+    window.addEventListener('mousemove', (e) => {
+      cx = e.clientX; cy = e.clientY;
+      renderCursor();
+    }, { passive: true });
+
+    document.querySelectorAll('.work-card:not(.work-card--teaser)').forEach((card) => {
+      const frame = card.querySelector('.work-card__frame');
+      if (!frame) return;
+
+      let slug;
+      try {
+        slug = new URL(card.getAttribute('href'), location.href).pathname.split('/').pop().replace('.html', '');
+      } catch { return; }
+      if (!slug) return;
+
+      const video = document.createElement('video');
+      video.className = 'work-card__preview';
+      video.muted = true;
+      video.loop = true;
+      video.playsInline = true;
+      video.preload = 'none';
+      video.innerHTML = `<source src="/assets/video/hover/${slug}-hover.mp4" type="video/mp4">`;
+      frame.appendChild(video);
+
+      video.addEventListener('playing', () => card.classList.add('is-previewing'));
+
+      let playPromise = null;
+      card.addEventListener('mouseenter', () => {
+        video.currentTime = 0;
+        playPromise = video.play().catch(() => {});
+        cursor.classList.add('is-active');
+        cursorScale = 1;
+        renderCursor();
+      });
+      card.addEventListener('mouseleave', () => {
+        card.classList.remove('is-previewing');
+        // Esperamos a que play() termine de resolver antes de pausar: si se
+        // llama pause() mientras play() todavía está en curso (muy común en
+        // grids densos, donde el mouse cruza varias cards rápido), el video
+        // puede quedar "trabado" sin volver a reproducirse nunca.
+        Promise.resolve(playPromise).finally(() => video.pause());
+        cursor.classList.remove('is-active');
+        cursorScale = 0.6;
+        renderCursor();
+      });
+    });
+  }
+
   /* ---- Typewriter: "Hablemos." on scroll into view ---- */
   const hablemosTitle = document.getElementById('hablemosTitle');
   if (hablemosTitle) {
