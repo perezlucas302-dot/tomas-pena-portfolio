@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 # ============================================================
-# video.sh — herramientas de video para el portfolio
+# videos.sh — herramientas de video para el portfolio
 #
 # USO:
-#   ./scripts/video.sh compress                     (todos los de raw/)
-#   ./scripts/video.sh compress mi-video.mov         (solo uno)
-#   ./scripts/video.sh hover assets/video/mi-proyecto-web.mp4 mi-proyecto
+#   ./scripts/videos.sh compress                     (todos los de raw/)
+#   ./scripts/videos.sh compress mi-video.mov         (solo uno)
+#   ./scripts/videos.sh hover assets/video/mi-proyecto-web.mp4 mi-proyecto
 #
 # Requiere ffmpeg instalado:
 #   sudo apt update && sudo apt install ffmpeg
@@ -27,7 +27,7 @@ shift || true
 # ============================================================
 RAW_DIR="raw"
 OUT_DIR="web"
-SCALE="1920:-2"
+SCALE="'min(1920,iw)':'min(1920,ih)':force_original_aspect_ratio=decrease:force_divisible_by=2"
 CRF=24          # 23-26 es un buen rango para web. Más alto = más liviano.
 PRESET="slow"   # mejor compresión, tarda un poco más
 
@@ -38,7 +38,7 @@ compress_one () {
     echo "→ Comprimiendo $input ..."
     ffmpeg -y -i "$RAW_DIR/$input" \
       -vf "scale=$SCALE" \
-      -c:v libx264 -profile:v main -level 3.1 -crf $CRF -preset $PRESET -pix_fmt yuv420p \
+      -c:v libx264 -profile:v main -level 4.1 -crf $CRF -preset $PRESET -pix_fmt yuv420p \
       -c:a aac -b:a 128k \
       -movflags +faststart \
       "$OUT_DIR/$name-web.mp4"
@@ -92,7 +92,7 @@ run_hover () {
   local SLUG="$2"
 
   if [ -z "$SRC" ] || [ -z "$SLUG" ]; then
-    echo "Uso: ./scripts/video.sh hover <video-origen.mp4> <slug-del-proyecto>"
+    echo "Uso: ./scripts/videos.sh hover <video-origen.mp4> <slug-del-proyecto>"
     exit 1
   fi
 
@@ -118,9 +118,9 @@ case "$CMD" in
     ;;
   *)
     echo "Uso:"
-    echo "  ./scripts/video.sh compress                (todos los de raw/)"
-    echo "  ./scripts/video.sh compress mi-video.mov    (solo uno)"
-    echo "  ./scripts/video.sh hover <video-web.mp4> <slug>"
+    echo "  ./scripts/videos.sh compress                (todos los de raw/)"
+    echo "  ./scripts/videos.sh compress mi-video.mov    (solo uno)"
+    echo "  ./scripts/videos.sh hover <video-web.mp4> <slug>"
     exit 1
     ;;
 esac
