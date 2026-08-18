@@ -2,6 +2,9 @@
 raw/
 web/
 
+# Dependencias — se reinstalan con npm install, no van al repo
+node_modules/
+
 # Sistema
 .DS_Store
 Thumbs.db

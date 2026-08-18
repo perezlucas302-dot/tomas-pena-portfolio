@@ -1,5 +1,5 @@
 // ============================================
-// TOMÁS PEÑA — main.js
+// TOMAS PEÑA — main.js
 // ============================================
 
 document.addEventListener('DOMContentLoaded', () => {

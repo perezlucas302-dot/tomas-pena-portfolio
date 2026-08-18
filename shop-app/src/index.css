@@ -1,0 +1,81 @@
+@import url('https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800;900&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap');
+@import "tailwindcss";
+
+/* ============================================================
+   Tokens — copiados 1:1 de css/style.css del sitio principal
+   para que la Shop no desentone del resto del portfolio.
+   ============================================================ */
+@theme {
+  --color-bg:          #0b0b0a;
+  --color-bg-elevated: #131210;
+  --color-ink:         #ede7db;
+  --color-ink-muted:   #9c958a;
+  --color-ink-faint:   #514c43;
+  --color-line:        #26241f;
+  --color-rec:         #e63f2e;
+  --color-rec-dim:     #4a231d;
+
+  --font-display: 'Big Shoulders Display', sans-serif;
+  --font-body:    'Inter', sans-serif;
+  --font-mono:    'IBM Plex Mono', monospace;
+
+  --ease-site: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  background: var(--color-bg);
+  color: var(--color-ink);
+}
+
+body {
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+@keyframes rec-pulse {
+  0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(230, 63, 46, 0.35); }
+  50%      { opacity: 0.55; box-shadow: 0 0 0 4px rgba(230, 63, 46, 0); }
+}
+
+.rec-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--color-rec);
+  flex-shrink: 0;
+  animation: rec-pulse 1.8s ease-in-out infinite;
+}
+
+/* Cue de "scroll" del hero de la Shop — la línea sola, quieta, no invita
+   a nada; un punto que la recorre en loop sí da la intuición de scrollear. */
+@keyframes scroll-cue {
+  0%   { transform: translateY(-2px); opacity: 0; }
+  25%  { opacity: 1; }
+  85%  { opacity: 0; }
+  100% { transform: translateY(20px); opacity: 0; }
+}
+
+.scroll-cue-dot {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: var(--color-ink);
+  transform: translateX(-50%);
+  animation: scroll-cue 1.6s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rec-dot { animation: none; }
+  * { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
+}
