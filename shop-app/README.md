@@ -44,7 +44,6 @@ src/
 
 ## Qué falta / roadmap
 
-- `assets/video/shop/grade-before.mp4`, `grade-after.mp4` y `export-preview.mp4` ya no los usa ningún componente (el header quedó con un solo clip fijo) — decidir si se borran o se dejan por si se retoma la idea de la grilla 2x2.
 - Conectar Stripe y/o Mercado Pago de verdad para los productos pagos (`CheckoutModal.tsx` hoy no procesa ningún cobro).
 - Blue Hour Noir sigue con imágenes placeholder (`src/data/products.ts`).
 - Los links de "Términos y condiciones" / "Política de privacidad" del footer todavía no tienen página real.

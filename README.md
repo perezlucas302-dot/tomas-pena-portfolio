@@ -160,7 +160,7 @@ cp -r shop-app/dist/. proyectos/shop/
 
 ### Header con video (`ShopHeader.tsx`)
 
-El hero de la Shop usa un solo clip de fondo a pantalla completa: `assets/video/shop/b-roll-timeline.mp4` (misma carpeta a nivel raíz que `assets/video/hover/`). Si el archivo no está, cae al degradé de fondo en vez de romper. Se probó también una variante con los 4 clips en grilla 2x2 (`grade-before.mp4`, `grade-after.mp4`, `b-roll-timeline.mp4`, `export-preview.mp4`) pero se descartó a favor de esta — esos otros 3 clips ya no se usan en el header, aunque `grade-before.mp4`/`grade-after.mp4`/`export-preview.mp4` siguen en `assets/video/shop/` por si se retoma la idea más adelante. Después de tocar el video hay que recompilar la shop (`npm run build` en `shop-app/`) y volver a copiar `dist/` a `proyectos/shop/`.
+El hero de la Shop usa un solo clip de fondo a pantalla completa: `assets/video/shop/b-roll-timeline.mp4` (misma carpeta a nivel raíz que `assets/video/hover/`). Si el archivo no está, cae al degradé de fondo en vez de romper. Se probó también una variante con los 4 clips en grilla 2x2, pero se descartó a favor de esta — los otros 3 clips (`grade-before.mp4`, `grade-after.mp4`, `export-preview.mp4`) ya se borraron del repo. Después de tocar el video hay que recompilar la shop (`npm run build` en `shop-app/`) y volver a copiar `dist/` a `proyectos/shop/`.
 
 ### El LUT gratis y su descarga (`data/products.ts`)
 
@@ -168,7 +168,6 @@ El primer producto del catálogo es gratis (`price: 0`) — `ProductCard` y `Che
 
 ### Qué falta / roadmap
 
-- Decidir si `assets/video/shop/grade-before.mp4` (~65MB), `grade-after.mp4` y `export-preview.mp4` se borran (ya no los usa ningún código) o se dejan por si se retoma la idea de la grilla 2x2.
 - Reemplazar las imágenes placeholder de Blue Hour Noir en `data/products.ts` por capturas antes/después reales.
 - Conectar Stripe y/o Mercado Pago de verdad (hoy `CheckoutModal.tsx` no procesa ningún pago).
 - La venta de SFX/audio quedó descartada — el catálogo por ahora es solo LUTs.
