@@ -294,3 +294,30 @@ document.addEventListener('DOMContentLoaded', () => {
     el.addEventListener('pointercancel', () => { dragging = false; });
   });
 })();
+
+/* ============================================
+   PROYECTO DESTACADO — scroll cinematográfico
+   ============================================ */
+(function () {
+  const featured = document.getElementById('featured');
+  if (!featured) return;
+
+  const media = featured.querySelector('.featured__media');
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reduced || !media) return;
+
+  let ticking = false;
+  function update() {
+    const rect = featured.getBoundingClientRect();
+    const scrollable = rect.height - window.innerHeight;
+    const progress = Math.min(1, Math.max(0, -rect.top / scrollable));
+    media.style.setProperty('--fscale', (1 + progress * 0.1).toFixed(3));
+    featured.classList.toggle('is-beat-2', progress > 0.3);
+    featured.classList.toggle('is-beat-3', progress > 0.62);
+    ticking = false;
+  }
+  window.addEventListener('scroll', () => {
+    if (!ticking) { requestAnimationFrame(update); ticking = true; }
+  }, { passive: true });
+  update();
+})();
