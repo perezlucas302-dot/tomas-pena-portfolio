@@ -27,7 +27,11 @@ export function CaseStudyCard({ caseStudy, index }: CaseStudyCardProps) {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.3 }}
       transition={{ duration: 0.8, delay: (index % 3) * 0.08, ease: EASE }}
-      className="flex flex-col border border-line bg-bg-elevated/40"
+      // Mismo borde/fondo que ProductCard pero con esquinas redondeadas y
+      // overflow-hidden: a propósito, para que a simple vista no se lea
+      // como "la misma card" que los LUTs a la venta — la de acá es prueba
+      // en marcas reales, no producto.
+      className="flex flex-col overflow-hidden rounded-[18px] border border-line bg-bg-elevated/40"
     >
       <BeforeAfterSlider before={caseStudy.before} after={caseStudy.after} title={caseStudy.title} />
 

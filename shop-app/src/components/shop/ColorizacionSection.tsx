@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { CASE_STUDIES } from '../../data/caseStudies'
 import { CaseStudyCard } from './CaseStudyCard'
@@ -11,16 +12,37 @@ import { CaseStudyCard } from './CaseStudyCard'
  */
 const HAMMER_EASE = [0.5, 0, 1, 0.4] as const
 
-const titleVariants = {
-  hidden: { y: -160, opacity: 0.85, scaleX: 1, scaleY: 1, filter: 'blur(0px)' },
-  visible: {
-    y: [-160, -30, 0, 0],
-    scaleY: [1, 1.15, 0.8, 1],
-    scaleX: [1, 1, 1.08, 1],
-    filter: ['blur(0px)', 'blur(1.5px)', 'blur(0px)', 'blur(0px)'],
-    opacity: [0.85, 1, 1, 1],
-    transition: { duration: 0.55, times: [0, 0.45, 0.85, 1], ease: HAMMER_EASE },
-  },
+// La distancia de caída tiene que caber dentro del padding-top del
+// section (py, más abajo) para que el título nunca arranque renderizado
+// por encima del section — o sea, pisando al ShopHeader de arriba. Ese
+// padding va de 80px (mobile) a 160px (desktop) — acá seguimos el mismo
+// quiebre para que la caída nunca se pase.
+function useFallDistance() {
+  const [fall, setFall] = useState(80)
+  useEffect(() => {
+    const mq = window.matchMedia('(min-width: 640px)')
+    const update = () => setFall(mq.matches ? 160 : 80)
+    update()
+    mq.addEventListener('change', update)
+    return () => mq.removeEventListener('change', update)
+  }, [])
+  return fall
+}
+
+function useTitleVariants() {
+  const fall = useFallDistance()
+  const mid = -Math.round(fall * 0.1875) // misma proporción que el original (-30 / -160)
+  return {
+    hidden: { y: -fall, opacity: 0.85, scaleX: 1, scaleY: 1, filter: 'blur(0px)' },
+    visible: {
+      y: [-fall, mid, 0, 0],
+      scaleY: [1, 1.15, 0.8, 1],
+      scaleX: [1, 1, 1.08, 1],
+      filter: ['blur(0px)', 'blur(1.5px)', 'blur(0px)', 'blur(0px)'],
+      opacity: [0.85, 1, 1, 1],
+      transition: { duration: 0.55, times: [0, 0.45, 0.85, 1], ease: HAMMER_EASE },
+    },
+  }
 }
 
 const markVariants = {
@@ -88,8 +110,10 @@ function dropVariants(delay: number) {
 }
 
 export function ColorizacionSection() {
+  const titleVariants = useTitleVariants()
+
   return (
-    <section className="border-t border-line py-[clamp(80px,12vw,160px)]">
+    <section className="border-t border-line pt-[clamp(80px,12vw,160px)] pb-[clamp(32px,5vw,56px)]">
       <div className="mx-auto max-w-[1400px] px-[clamp(20px,4vw,64px)]">
         <motion.div
           className="flex flex-col items-center gap-4 text-center"
