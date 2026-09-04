@@ -1,9 +1,16 @@
 import type { Product } from '../types'
 
 /**
- * Catálogo de LUTs. "Origen LUT" ya tiene sus imágenes y su descarga real
- * — "Blue Hour Noir" sigue con placeholders de placehold.co, reemplazar
- * por capturas antes/después reales cuando estén los activos definitivos.
+ * Catálogo visual de LUTs — lo que se ve en la shop (título, fotos,
+ * descripción, precio a mostrar). Para los productos PAGOS, el precio
+ * que se cobra de verdad y el archivo a entregar viven en
+ * `api/_lib/catalog.js` (raíz del repo) y en Vercel Blob respectivamente
+ * — nunca acá, porque este archivo es público en GitHub. Si cambiás el
+ * precio de un producto pago, actualizalo en los dos lugares.
+ *
+ * "Origen LUT" ya tiene sus imágenes y su descarga real (gratis, sin
+ * pago). "Ruptura LUT" ya tiene todo cargado — imágenes, descripción y
+ * archivo subido a Vercel Blob (ver PAGOS-SETUP.md).
  */
 export const PRODUCTS: Product[] = [
   {
@@ -20,13 +27,20 @@ export const PRODUCTS: Product[] = [
     downloadUrl: '/assets/luts/origen-lut.drx',
   },
   {
-    id: 'lut-blue-hour-noir',
-    title: 'Blue Hour Noir',
-    shortDescription: 'Sombras azuladas y contraste alto para escenas nocturnas.',
+    // Pago — el precio real a cobrar está en api/_lib/catalog.js
+    // (PRODUCTS['lut-ruptura'].priceUsdCents). Mantené este
+    // `price: 29.99` igual a ese valor, es solo para mostrarlo en la card.
+    id: 'lut-ruptura',
+    title: 'Ruptura LUT — Tomas Peña',
+    shortDescription:
+      'LOOK CÁLIDO, CINEMATOGRÁFICO Y CON CONTRASTE, RESALTANDO TONOS DE PIEL Y CREANDO UNA ATMÓSFERA MÁS INTENSA Y PROFESIONAL.',
     category: 'LUT',
-    price: 15,
-    take: 'B012_C003',
-    imageBefore: 'https://placehold.co/1200x800/1a1a18/514c43?text=RAW',
-    imageAfter: 'https://placehold.co/1200x800/0d1520/6f9bd1?text=GRADED',
+    price: 29.99,
+    take: 'Etapa 02',
+    imageBefore: '/assets/img/covers/ruptura-lut-before.jpg',
+    imageAfter: '/assets/img/covers/ruptura-lut-after.jpg',
+    // Sin downloadUrl a propósito: los productos pagos no se descargan
+    // por link directo, se entregan por /api/download después de
+    // verificar el pago (ver CheckoutModal.tsx / PaymentReturn.tsx).
   },
 ]

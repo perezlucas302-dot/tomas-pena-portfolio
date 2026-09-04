@@ -1,4 +1,5 @@
 import { AnimatePresence, motion } from 'framer-motion'
+import { useState } from 'react'
 import type { Product } from '../../types'
 import { downloadFilename, formatPrice } from '../../lib/format'
 
@@ -7,7 +8,38 @@ interface CheckoutModalProps {
   onClose: () => void
 }
 
+type Provider = 'stripe' | 'mp'
+
+// Mercado Pago sigue implementado (backend y lógica intactos) pero el botón
+// queda oculto hasta decidir con el cliente si se usa. Poner en `true` para
+// volver a mostrarlo — no hace falta tocar nada más.
+const SHOW_MERCADOPAGO = false
+
 export function CheckoutModal({ product, onClose }: CheckoutModalProps) {
+  const [loading, setLoading] = useState<Provider | null>(null)
+  const [error, setError] = useState<string | null>(null)
+
+  async function pay(provider: Provider) {
+    if (!product) return
+    setError(null)
+    setLoading(provider)
+    try {
+      const endpoint = provider === 'stripe' ? '/api/create-checkout-session' : '/api/create-mp-preference'
+      const res = await fetch(endpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ productId: product.id }),
+      })
+      if (!res.ok) throw new Error()
+      const data: { url?: string } = await res.json()
+      if (!data.url) throw new Error()
+      window.location.href = data.url
+    } catch {
+      setError('No se pudo iniciar el pago. Probá de nuevo en un rato.')
+      setLoading(null)
+    }
+  }
+
   return (
     <AnimatePresence>
       {product && (
@@ -85,25 +117,33 @@ export function CheckoutModal({ product, onClose }: CheckoutModalProps) {
               <div className="flex flex-col gap-3">
                 <button
                   type="button"
-                  className="w-full rounded-full bg-ink px-5 py-3 font-mono text-[12px] font-medium tracking-[0.08em] text-bg uppercase transition-opacity duration-300 ease-site hover:opacity-85"
+                  disabled={loading !== null}
+                  onClick={() => pay('stripe')}
+                  className="w-full rounded-full bg-ink px-5 py-3 font-mono text-[12px] font-medium tracking-[0.08em] text-bg uppercase transition-opacity duration-300 ease-site hover:opacity-85 disabled:cursor-wait disabled:opacity-60"
                 >
-                  Pagar con Stripe
+                  {loading === 'stripe' ? 'Redirigiendo…' : 'Pagar con Stripe'}
                 </button>
-                <button
-                  type="button"
-                  className="w-full rounded-full border border-ink-faint px-5 py-3 font-mono text-[12px] font-medium tracking-[0.08em] text-ink uppercase transition-colors duration-300 ease-site hover:border-rec hover:text-rec"
-                >
-                  Pagar con Mercado Pago
-                </button>
+                {SHOW_MERCADOPAGO && (
+                  <button
+                    type="button"
+                    disabled={loading !== null}
+                    onClick={() => pay('mp')}
+                    className="w-full rounded-full border border-ink-faint px-5 py-3 font-mono text-[12px] font-medium tracking-[0.08em] text-ink uppercase transition-colors duration-300 ease-site hover:border-rec hover:text-rec disabled:cursor-wait disabled:opacity-60"
+                  >
+                    {loading === 'mp' ? 'Redirigiendo…' : 'Pagar con Mercado Pago'}
+                  </button>
+                )}
               </div>
             )}
+
+            {error && <p className="mt-3 text-center font-mono text-[10px] text-rec uppercase">{error}</p>}
 
             <p className="mt-4 text-center font-mono text-[10px] text-ink-faint uppercase">
               {product.price === 0
                 ? product.downloadUrl
                   ? 'Descarga directa — sin registro'
-                  : 'Demo — el archivo todavía no está listo para descargar'
-                : 'Demo — sin cobro real'}
+                  : 'Todavía no está listo para descargar'
+                : 'Pago seguro — el LUT se descarga solo al aprobarse'}
             </p>
           </motion.div>
         </motion.div>

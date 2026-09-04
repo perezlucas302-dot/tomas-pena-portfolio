@@ -9,6 +9,8 @@ tomas-pena/
 ├── index.html                 → Home (Hero, Proyectos, Servicios, Banner, Sobre mí, Contacto)
 ├── css/style.css              → Todos los estilos del sitio (tokens de diseño arriba del archivo)
 ├── js/main.js                 → Nav, scroll reveal, reloj en vivo, typewriter, hover-preview de video, compare de color grading
+├── api/                       → Funciones serverless (Vercel) de la pasarela de pago — ver PAGOS-SETUP.md
+├── PAGOS-SETUP.md             → Guía para dejar cobrando de verdad (cuentas, claves, archivos)
 ├── assets/
 │   ├── img/covers/            → Portadas de cada proyecto
 │   ├── img/personal/          → Firma y foto de perfil
@@ -104,7 +106,7 @@ im.save("archivo.jpg", "JPEG", quality=82, optimize=True)
 
 ## Shop (`shop-app/`)
 
-La tienda de LUTs vive como app aparte en React + TypeScript + Vite + Tailwind + Framer Motion, para poder tener más motion e interacción de la que da hacer todo a mano en vanilla JS. Ya tiene: entrada animada ("Scale Brutal"), header con video, sección "Colorización" (casos reales antes/después + el título con efecto martillo), grid de productos con scroll-reveal, y un LUT gratis con descarga real. Lo que sigue siendo demo: los botones de Stripe/Mercado Pago no cobran nada de verdad todavía.
+La tienda de LUTs vive como app aparte en React + TypeScript + Vite + Tailwind + Framer Motion, para poder tener más motion e interacción de la que da hacer todo a mano en vanilla JS. Ya tiene: entrada animada ("Scale Brutal"), header con video, sección "Colorización" (casos reales antes/después + el título con efecto martillo), grid de productos con scroll-reveal, un LUT gratis con descarga real, y pasarela de pago real con Stripe + Mercado Pago (precios en USD, el LUT pago se descarga solo al aprobarse el pago). Ver **[PAGOS-SETUP.md](./PAGOS-SETUP.md)** para dejarla cobrando de verdad (crear las cuentas, cargar las claves, subir los archivos).
 
 ### Cómo se integra con el sitio estático
 
@@ -168,7 +170,8 @@ El primer producto del catálogo es gratis (`price: 0`) — `ProductCard` y `Che
 
 ### Qué falta / roadmap
 
-- Reemplazar las imágenes placeholder de Blue Hour Noir en `data/products.ts` por capturas antes/después reales.
-- Conectar Stripe y/o Mercado Pago de verdad (hoy `CheckoutModal.tsx` no procesa ningún pago).
+- Escribir la descripción definitiva de Ruptura LUT en `data/products.ts` (por ahora vacía).
+- Crear las cuentas de Stripe y Mercado Pago, cargar las claves en Vercel y subir el archivo real de cada LUT pago — el código ya está, ver **[PAGOS-SETUP.md](./PAGOS-SETUP.md)**.
+- Pedir el mail antes de descargar (gratis y pagos) — con Stripe/MP el mail ya se pide al pagar, falta sumarlo al LUT gratis. Ver la última sección de PAGOS-SETUP.md.
 - La venta de SFX/audio quedó descartada — el catálogo por ahora es solo LUTs.
 - El footer (`ShopFooter.tsx`) se deja como está a propósito — su rediseño todavía se está pensando. Sus links de "Términos y condiciones" / "Política de privacidad" todavía no tienen página real.

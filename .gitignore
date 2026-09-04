@@ -5,6 +5,21 @@ web/
 # Dependencias — se reinstalan con npm install, no van al repo
 node_modules/
 
+# Archivos de LUTs pagos, en espera de subirse a Vercel Blob — nunca al
+# repo público (ver PAGOS-SETUP.md, sección 3).
+.private/
+
+# Claves reales (Stripe, Mercado Pago, etc.) — .env.example es la plantilla
+# pública, los valores de verdad nunca van al repo.
+.env
+.env.local
+.env*.local
+
+# Config local que genera `vercel link` (a qué proyecto de Vercel está
+# atada esta carpeta) — no hace falta compartirla en el repo.
+.vercel
+
 # Sistema
 .DS_Store
 Thumbs.db
+.env*

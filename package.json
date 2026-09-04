@@ -1,6 +1,10 @@
 {
+  "type": "module",
   "dependencies": {
     "@vercel/analytics": "^2.0.1",
-    "shop-app": "file:shop-app"
+    "@vercel/blob": "^2.8.0",
+    "mercadopago": "^2.10.0",
+    "shop-app": "file:shop-app",
+    "stripe": "^22.5.0"
   }
 }

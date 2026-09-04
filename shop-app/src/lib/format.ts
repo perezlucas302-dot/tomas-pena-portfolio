@@ -14,3 +14,20 @@ export function downloadFilename(title: string, downloadUrl: string): string | u
   if (!extension || extension === downloadUrl) return undefined
   return `${title}.${extension}`
 }
+
+/**
+ * URL de /api/download para un producto pago ya aprobado, a partir de los
+ * parámetros que devuelve cada proveedor en su redirect de éxito. La arma
+ * PaymentReturn.tsx después de leer la URL de vuelta del pago.
+ */
+export function buildDownloadUrl(params: {
+  provider: 'stripe' | 'mp'
+  productId: string
+  sessionId?: string | null
+  paymentId?: string | null
+}): string {
+  const qs = new URLSearchParams({ provider: params.provider, product: params.productId })
+  if (params.sessionId) qs.set('session_id', params.sessionId)
+  if (params.paymentId) qs.set('payment_id', params.paymentId)
+  return `/api/download?${qs.toString()}`
+}
