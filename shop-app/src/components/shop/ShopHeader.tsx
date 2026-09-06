@@ -17,7 +17,19 @@ export function ShopHeader() {
   return (
     <div className="relative h-[100svh] min-h-[560px] w-full overflow-hidden bg-bg">
       <div className="absolute inset-0" style={{ background: CLIP.gradient }}>
-        <video className="absolute inset-0 h-full w-full object-cover" autoPlay muted loop playsInline preload="auto">
+        {/* En mobile el recorte de object-cover queda muy angosto (la
+            persona del clip está corrida a la izquierda del cuadro) y con
+            el centrado por default se le va todo ese lado; se corre el
+            punto de recorte hacia la izquierda solo ahí. En desktop el
+            cuadro es más ancho y el centrado ya se ve bien. */}
+        <video
+          className="absolute inset-0 h-full w-full object-cover object-[20%_center] md:object-center"
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="auto"
+        >
           <source src={CLIP.src} type="video/mp4" />
         </video>
       </div>

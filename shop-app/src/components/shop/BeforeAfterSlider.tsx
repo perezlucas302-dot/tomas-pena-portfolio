@@ -11,6 +11,16 @@ interface BeforeAfterSliderProps {
  * Slider antes/después arrastrable. La imagen "after" queda recortada con
  * clip-path según la posición del handle; todo controlado con pointer
  * events para que funcione igual con mouse y con dedo.
+ *
+ * Con mouse, tocar cualquier parte de la imagen arranca el drag desde ahí
+ * (cómodo, no hay riesgo de tapar scroll). Con dedo, en cambio, SOLO el
+ * agarre del medio arranca el drag — si cualquier toque sobre la imagen
+ * lo hiciera (como era antes), un scroll que empieza justo ahí se
+ * interpreta como "mover la línea" en vez de scrollear la página, y en
+ * Android eso pasaba con cualquier toque sobre la imagen (en iPhone,
+ * Safari es más estricto con cuándo arranca el drag, por eso ahí "de
+ * casualidad" solo pasaba tocando la línea). Por eso `touch-none` (que
+ * bloquea el scroll nativo) vive solo en el agarre, no en toda la card.
  */
 export function BeforeAfterSlider({ before, after, title }: BeforeAfterSliderProps) {
   const [position, setPosition] = useState(50)
@@ -25,10 +35,22 @@ export function BeforeAfterSlider({ before, after, title }: BeforeAfterSliderPro
     setPosition(Math.min(100, Math.max(0, pct)))
   }, [])
 
-  const onPointerDown = (e: React.PointerEvent) => {
+  const startDrag = (e: React.PointerEvent) => {
     setDragging(true)
     updateFromClientX(e.clientX)
-    ;(e.target as HTMLElement).setPointerCapture(e.pointerId)
+    // Captura en el frame (no en e.target): así el move/up siguen
+    // llegando acá aunque el drag haya arrancado desde el agarre.
+    frameRef.current?.setPointerCapture(e.pointerId)
+  }
+
+  const onFramePointerDown = (e: React.PointerEvent) => {
+    if (e.pointerType === 'touch') return // con dedo, solo arranca desde el agarre
+    startDrag(e)
+  }
+
+  const onHandlePointerDown = (e: React.PointerEvent) => {
+    e.stopPropagation()
+    startDrag(e)
   }
 
   const onPointerMove = (e: React.PointerEvent) => {
@@ -41,8 +63,8 @@ export function BeforeAfterSlider({ before, after, title }: BeforeAfterSliderPro
   return (
     <div
       ref={frameRef}
-      className="group/frame relative aspect-video w-full touch-none overflow-hidden bg-bg-elevated select-none"
-      onPointerDown={onPointerDown}
+      className="group/frame relative aspect-video w-full overflow-hidden bg-bg-elevated select-none"
+      onPointerDown={onFramePointerDown}
       onPointerMove={onPointerMove}
       onPointerUp={onPointerUp}
       onPointerLeave={onPointerUp}
@@ -91,7 +113,8 @@ export function BeforeAfterSlider({ before, after, title }: BeforeAfterSliderPro
         style={{ left: `${position}%` }}
       >
         <div
-          className={`absolute top-1/2 left-1/2 flex h-8 w-8 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-ink/40 bg-bg/90 backdrop-blur-sm transition-transform duration-300 ease-site ${
+          onPointerDown={onHandlePointerDown}
+          className={`pointer-events-auto absolute top-1/2 left-1/2 flex h-10 w-10 -translate-x-1/2 -translate-y-1/2 touch-none items-center justify-center rounded-full border border-ink/40 bg-bg/90 backdrop-blur-sm transition-transform duration-300 ease-site ${
             dragging ? 'scale-110' : 'group-hover/frame:scale-105'
           }`}
         >

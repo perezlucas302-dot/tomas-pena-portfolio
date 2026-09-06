@@ -2,6 +2,17 @@
 // TOMAS PEÑA — main.js
 // ============================================
 
+/* ---- Siempre arrancar arriba en un refresh ----
+   Por default, el navegador restaura el scroll donde quedó antes de
+   recargar. Con secciones con animación ligada al scroll (como
+   "Proyecto destacado" más abajo) eso puede mostrar el sitio a mitad de
+   una transición antes de que el usuario vuelva a moverse. Se apaga esa
+   restauración automática y se fuerza el scroll a 0 en cada carga. */
+if ('scrollRestoration' in history) {
+  history.scrollRestoration = 'manual';
+}
+window.scrollTo(0, 0);
+
 document.addEventListener('DOMContentLoaded', () => {
 
   /* ---- Nav: background on scroll ---- */
@@ -301,21 +312,6 @@ document.addEventListener('DOMContentLoaded', () => {
 (function () {
   const featured = document.getElementById('featured');
   if (!featured) return;
-
-  // El fondo blureado no reproduce el video: solo se queda en un frame fijo
-  // (bastante avanzado como para no agarrar un fade-in a negro del inicio).
-  // Corre siempre, incluso con reduced motion, porque no es una animación,
-  // es el fondo estático de la sección.
-  const bgVideo = featured.querySelector('.featured__media-bg');
-  if (bgVideo) {
-    bgVideo.addEventListener(
-      'loadeddata',
-      () => {
-        try { bgVideo.currentTime = 0.3; } catch { /* noop */ }
-      },
-      { once: true },
-    );
-  }
 
   const media = featured.querySelector('.featured__media');
   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
