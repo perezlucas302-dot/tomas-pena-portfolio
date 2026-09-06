@@ -3,8 +3,8 @@
 //
 // OJO — esto necesita probarse con una cuenta real de Mercado Pago antes
 // de ir a producción: una cuenta de Mercado Pago de Argentina normalmente
-// solo puede cobrar en pesos (ARS), no en dólares — a diferencia de
-// Stripe, MP no es multi-moneda. Por eso acá convertimos el precio en
+// solo puede cobrar en pesos (ARS), no en dólares — no es multi-moneda.
+// Por eso acá convertimos el precio en
 // USD a ARS al momento de generar la preferencia, usando una cotización
 // en vivo (dolarapi.com, oficial, sin necesitar API key) con un valor
 // fijo de respaldo si esa consulta falla. Confirmá en tu cuenta de MP

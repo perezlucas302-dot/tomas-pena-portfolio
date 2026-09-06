@@ -1,6 +1,7 @@
 /**
  * Catálogo "de servidor": la fuente de verdad para precio y monto a cobrar
- * en Stripe / Mercado Pago. A propósito es un archivo aparte del catálogo
+ * si Mercado Pago se reactiva (hoy la venta real pasa por Gumroad). A
+ * propósito es un archivo aparte del catálogo
  * visual (`shop-app/src/data/products.ts`) — ese decide qué se ve en la
  * shop (título, fotos, descripción), este decide cuánto se cobra de
  * verdad. Mantenerlos sincronizados a mano: cuando sumes o cambies el

@@ -1,25 +1,26 @@
 // Entrega el archivo de un producto pago SOLO después de confirmar el
-// pago directo contra la API del proveedor correspondiente (no confía en
-// los parámetros de la URL por sí solos — session_id / payment_id son
-// públicos, lo que importa es lo que Stripe/MP contestan al consultarlos).
+// pago directo contra la API de Mercado Pago (no confía en los
+// parámetros de la URL por sí solos — payment_id es público, lo que
+// importa es lo que MP contesta al consultarlo).
 //
 // El archivo real nunca vive en este repo (es público en GitHub) — vive
 // en Vercel Blob, y esta función es la única que conoce su URL (guardada
 // en una env var por producto, ver api/_lib/catalog.js). El browser nunca
 // ve esa URL, solo el resultado ya verificado.
+//
+// Nota: esto solo aplica si Mercado Pago se reactiva (hoy está oculto en
+// CheckoutModal.tsx). El producto que se vende hoy (Ruptura LUT) se
+// compra en Gumroad, que entrega el archivo directo — no pasa por acá.
 
-import Stripe from 'stripe'
 import { MercadoPagoConfig, Payment } from 'mercadopago'
 import { getProduct, getBlobUrl } from './_lib/catalog.js'
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY)
 const mpClient = new MercadoPagoConfig({ accessToken: process.env.MP_ACCESS_TOKEN })
 
 export async function GET(request) {
   const url = new URL(request.url)
   const provider = url.searchParams.get('provider')
   const productId = url.searchParams.get('product')
-  const sessionId = url.searchParams.get('session_id')
   const paymentId = url.searchParams.get('payment_id')
 
   const product = productId ? getProduct(productId) : undefined
@@ -30,13 +31,7 @@ export async function GET(request) {
   let paid = false
 
   try {
-    if (provider === 'stripe' && sessionId) {
-      const session = await stripe.checkout.sessions.retrieve(sessionId)
-      paid =
-        session.payment_status === 'paid' &&
-        session.metadata?.productId === productId &&
-        (session.amount_total ?? 0) >= product.priceUsdCents
-    } else if (provider === 'mp' && paymentId) {
+    if (provider === 'mp' && paymentId) {
       const payment = new Payment(mpClient)
       const info = await payment.get({ id: paymentId })
       paid = info.status === 'approved' && (info.metadata?.productId ?? info.metadata?.product_id) === productId

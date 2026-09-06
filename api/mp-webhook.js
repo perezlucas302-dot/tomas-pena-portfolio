@@ -4,9 +4,9 @@
 // POST con `{ data: { id } }` en el body — por eso este handler acepta
 // los dos métodos y prueba ambas formas de sacar el id.
 //
-// Igual que con Stripe, /api/download vuelve a verificar el pago directo
-// contra la API de MP antes de entregar el archivo — este webhook no es
-// lo único que decide si se puede descargar.
+// /api/download vuelve a verificar el pago directo contra la API de MP
+// antes de entregar el archivo — este webhook no es lo único que decide
+// si se puede descargar.
 //
 // Se registra solo (notification_url) al crear cada preferencia, ver
 // create-mp-preference.js — no hace falta configurar nada a mano.

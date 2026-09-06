@@ -4,7 +4,6 @@
     "@vercel/analytics": "^2.0.1",
     "@vercel/blob": "^2.8.0",
     "mercadopago": "^2.10.0",
-    "shop-app": "file:shop-app",
-    "stripe": "^22.5.0"
+    "shop-app": "file:shop-app"
   }
 }

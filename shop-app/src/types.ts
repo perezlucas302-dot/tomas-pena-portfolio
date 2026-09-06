@@ -18,4 +18,10 @@ export interface Product {
    * ofrecer una descarga rota.
    */
   downloadUrl?: string
+  /**
+   * Página del producto en Gumroad (Merchant of Record) — ellos cobran la
+   * tarjeta y entregan el archivo, nosotros solo enlazamos. Es la vía real
+   * de pago hoy (Mercado Pago está en espera, ver CheckoutModal.tsx).
+   */
+  gumroadUrl?: string
 }

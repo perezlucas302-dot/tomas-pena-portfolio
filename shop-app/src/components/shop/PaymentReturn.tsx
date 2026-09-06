@@ -33,8 +33,9 @@ const COPY: Record<Status, { eyebrow: string; title: string; body: (productTitle
 }
 
 /**
- * Pantalla que se muestra al volver de Stripe/Mercado Pago (?checkout=...
- * en la URL, ver App.tsx). Si el pago está aprobado y hay downloadUrl,
+ * Pantalla que se muestra al volver de Mercado Pago, si se reactiva
+ * (?checkout=... en la URL, ver App.tsx) — Gumroad no pasa por acá, entrega
+ * el archivo directo. Si el pago está aprobado y hay downloadUrl,
  * dispara la descarga sola apenas se monta — el botón "Volver a
  * descargar" queda de respaldo por si el navegador bloqueó la descarga
  * automática.

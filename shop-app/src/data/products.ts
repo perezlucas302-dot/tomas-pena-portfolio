@@ -39,8 +39,8 @@ export const PRODUCTS: Product[] = [
     take: 'Etapa 02',
     imageBefore: '/assets/img/covers/ruptura-lut-before.jpg',
     imageAfter: '/assets/img/covers/ruptura-lut-after.jpg',
-    // Sin downloadUrl a propósito: los productos pagos no se descargan
-    // por link directo, se entregan por /api/download después de
-    // verificar el pago (ver CheckoutModal.tsx / PaymentReturn.tsx).
+    // Sin downloadUrl a propósito: es un producto pago, se compra en
+    // Gumroad (ver gumroadUrl) — Gumroad entrega el archivo, no nosotros.
+    gumroadUrl: 'https://tomypena.gumroad.com/l/ruptura',
   },
 ]

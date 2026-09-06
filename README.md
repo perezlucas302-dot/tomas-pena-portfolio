@@ -106,7 +106,7 @@ im.save("archivo.jpg", "JPEG", quality=82, optimize=True)
 
 ## Shop (`shop-app/`)
 
-La tienda de LUTs vive como app aparte en React + TypeScript + Vite + Tailwind + Framer Motion, para poder tener más motion e interacción de la que da hacer todo a mano en vanilla JS. Ya tiene: entrada animada ("Scale Brutal"), header con video, sección "Colorización" (casos reales antes/después + el título con efecto martillo), grid de productos con scroll-reveal, un LUT gratis con descarga real, y pasarela de pago real con Stripe + Mercado Pago (precios en USD, el LUT pago se descarga solo al aprobarse el pago). Ver **[PAGOS-SETUP.md](./PAGOS-SETUP.md)** para dejarla cobrando de verdad (crear las cuentas, cargar las claves, subir los archivos).
+La tienda de LUTs vive como app aparte en React + TypeScript + Vite + Tailwind + Framer Motion, para poder tener más motion e interacción de la que da hacer todo a mano en vanilla JS. Ya tiene: entrada animada ("Scale Brutal"), header con video, sección "Colorización" (casos reales antes/después + el título con efecto martillo), grid de productos con scroll-reveal, un LUT gratis con descarga real, y pasarela de pago real con Gumroad (el comprador paga con tarjeta internacional y Gumroad entrega el archivo). Mercado Pago quedó implementado pero en espera (Stripe se descartó — no acepta cuentas de Argentina). Ver **[PAGOS-SETUP.md](./PAGOS-SETUP.md)** para el detalle de cada vía.
 
 ### Cómo se integra con el sitio estático
 
@@ -166,12 +166,11 @@ El hero de la Shop usa un solo clip de fondo a pantalla completa: `assets/video/
 
 ### El LUT gratis y su descarga (`data/products.ts`)
 
-El primer producto del catálogo es gratis (`price: 0`) — `ProductCard` y `CheckoutModal` cambian su copy y su botón solos cuando detectan precio 0 (dice "Gratis", el botón pasa a "Descargar ahora", sin Stripe/Mercado Pago). El archivo real a entregar va en el campo `downloadUrl` del producto, apuntando a `assets/luts/<archivo>` — sin ese campo, el botón queda deshabilitado con el aviso de que todavía no está listo, en vez de ofrecer un link roto. El nombre que ve quien descarga es el `title` del producto, no el nombre del archivo (lo arma `downloadFilename()` en `lib/format.ts`).
+El primer producto del catálogo es gratis (`price: 0`) — `ProductCard` y `CheckoutModal` cambian su copy y su botón solos cuando detectan precio 0 (dice "Gratis", el botón pasa a "Descargar ahora", directo, sin pasar por Gumroad ni Mercado Pago). El archivo real a entregar va en el campo `downloadUrl` del producto, apuntando a `assets/luts/<archivo>` — sin ese campo, el botón queda deshabilitado con el aviso de que todavía no está listo, en vez de ofrecer un link roto. El nombre que ve quien descarga es el `title` del producto, no el nombre del archivo (lo arma `downloadFilename()` en `lib/format.ts`).
 
 ### Qué falta / roadmap
 
 - Escribir la descripción definitiva de Ruptura LUT en `data/products.ts` (por ahora vacía).
-- Crear las cuentas de Stripe y Mercado Pago, cargar las claves en Vercel y subir el archivo real de cada LUT pago — el código ya está, ver **[PAGOS-SETUP.md](./PAGOS-SETUP.md)**.
-- Pedir el mail antes de descargar (gratis y pagos) — con Stripe/MP el mail ya se pide al pagar, falta sumarlo al LUT gratis. Ver la última sección de PAGOS-SETUP.md.
+- Pedir el mail antes de descargar el LUT **gratis** — el pago ya lo pide solo. Ver la última sección de PAGOS-SETUP.md.
 - La venta de SFX/audio quedó descartada — el catálogo por ahora es solo LUTs.
 - El footer (`ShopFooter.tsx`) se deja como está a propósito — su rediseño todavía se está pensando. Sus links de "Términos y condiciones" / "Política de privacidad" todavía no tienen página real.

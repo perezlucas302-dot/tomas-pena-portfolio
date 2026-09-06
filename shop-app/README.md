@@ -38,22 +38,20 @@ src/
     ├── CaseStudyCard.tsx        → una card de caso real (con la pincelada bajo el título, atada al scroll)
     ├── ProductCard.tsx          → una card de producto en venta
     ├── BeforeAfterSlider.tsx    → el slider arrastrable antes/después (lo comparten ambas cards de arriba)
-    ├── CheckoutModal.tsx        → resumen de compra — paga con Stripe/Mercado Pago o descarga gratis según el precio
+    ├── CheckoutModal.tsx        → resumen de compra — lleva a Gumroad o descarga gratis según el precio
     ├── PaymentReturn.tsx        → pantalla al volver del pago — dispara la descarga sola si se aprobó
     └── ShopFooter.tsx
 ```
 
-## Pagos (Stripe + Mercado Pago)
+## Pagos (Gumroad)
 
-El pago en sí corre en `/api/*` en la **raíz del repo** (no acá adentro) —
-son funciones serverless de Vercel, y `CheckoutModal.tsx` las llama por
-`fetch`. Para probar el flujo de pago completo hace falta correr esas
-funciones, no alcanza con `vite dev` — ver "Probar antes de anunciar" en
-[`../PAGOS-SETUP.md`](../PAGOS-SETUP.md).
+El producto pago se compra en Gumroad (`product.gumroadUrl` en
+`data/products.ts`) — es un link externo, `CheckoutModal.tsx` no llama a
+ningún `/api/*` para esto. Mercado Pago quedó implementado en `/api/*` (raíz
+del repo) por si se reactiva, ver [`../PAGOS-SETUP.md`](../PAGOS-SETUP.md).
 
 ## Qué falta / roadmap
 
-- Crear las cuentas de Stripe/Mercado Pago, cargar las claves y subir el archivo real de Ruptura LUT — ver [`../PAGOS-SETUP.md`](../PAGOS-SETUP.md).
 - Ruptura LUT todavía no tiene descripción definitiva (`src/data/products.ts`).
 - Pedir el mail antes de descargar el LUT gratis (los pagos ya lo piden solos al procesar el pago).
 - Los links de "Términos y condiciones" / "Política de privacidad" del footer todavía no tienen página real.

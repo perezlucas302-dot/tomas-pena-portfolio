@@ -9,7 +9,7 @@ node_modules/
 # repo público (ver PAGOS-SETUP.md, sección 3).
 .private/
 
-# Claves reales (Stripe, Mercado Pago, etc.) — .env.example es la plantilla
+# Claves reales (Mercado Pago, etc.) — .env.example es la plantilla
 # pública, los valores de verdad nunca van al repo.
 .env
 .env.local

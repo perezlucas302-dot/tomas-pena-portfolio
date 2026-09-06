@@ -16,18 +16,14 @@ export function downloadFilename(title: string, downloadUrl: string): string | u
 }
 
 /**
- * URL de /api/download para un producto pago ya aprobado, a partir de los
- * parámetros que devuelve cada proveedor en su redirect de éxito. La arma
- * PaymentReturn.tsx después de leer la URL de vuelta del pago.
+ * URL de /api/download para un producto pago ya aprobado por Mercado
+ * Pago, a partir de los parámetros que devuelve en su redirect de éxito.
+ * La arma PaymentReturn.tsx después de leer la URL de vuelta del pago.
+ * (Solo aplica si MP se reactiva — el producto que se vende hoy se compra
+ * en Gumroad, que entrega el archivo directo, sin pasar por acá.)
  */
-export function buildDownloadUrl(params: {
-  provider: 'stripe' | 'mp'
-  productId: string
-  sessionId?: string | null
-  paymentId?: string | null
-}): string {
-  const qs = new URLSearchParams({ provider: params.provider, product: params.productId })
-  if (params.sessionId) qs.set('session_id', params.sessionId)
+export function buildDownloadUrl(params: { productId: string; paymentId?: string | null }): string {
+  const qs = new URLSearchParams({ provider: 'mp', product: params.productId })
   if (params.paymentId) qs.set('payment_id', params.paymentId)
   return `/api/download?${qs.toString()}`
 }

@@ -1,44 +1,40 @@
 # Pasarela de pago — guía de puesta en marcha
 
-Esto documenta cómo dejar cobrando de verdad la Shop (Stripe + Mercado Pago,
-precios en USD, entrega automática del LUT al aprobarse el pago). El código
-ya está escrito (`/api/*`) — lo que falta es lo que **nadie puede hacer por
-vos**: crear las cuentas, verificarlas, y cargar las claves en Vercel.
-
-No hace falta hacer todo esto de una — se puede probar todo con Stripe en
-modo test sin cuenta bancaria vinculada, y sumar Mercado Pago después.
+Esto documenta cómo cobra la Shop hoy. **La vía real es Gumroad** (ver
+sección 1) — Stripe se descartó del todo (Argentina no está en su lista de
+países soportados, no hay forma de tener cuenta propia sin armar una
+empresa en el exterior) y Mercado Pago quedó implementado pero en espera
+(código intacto, botón oculto en `CheckoutModal.tsx`).
 
 ---
 
-## 1. Stripe
+## 1. Gumroad (vía activa)
 
-1. Creá la cuenta en [dashboard.stripe.com/register](https://dashboard.stripe.com/register).
-2. Mientras no actives la cuenta (verificación de identidad + banco), Stripe
-   te deja trabajar en **modo test** con datos falsos — sirve para probar
-   todo el flujo de punta a punta antes de cobrar un centavo real.
-3. **Claves API**: Developers → API keys. Copiá la *Secret key*
-   (`sk_test_...` en test, `sk_live_...` en producción) → va en la env var
-   `STRIPE_SECRET_KEY`.
-4. **Webhook**: Developers → Webhooks → Add endpoint.
-   - URL: `https://tu-dominio/api/stripe-webhook`
-   - Evento a escuchar: `checkout.session.completed`
-   - Copiá el *Signing secret* (`whsec_...`) → `STRIPE_WEBHOOK_SECRET`.
-5. **Medios de pago**: Settings → Payment methods → activá los que quieras
-   además de tarjeta (Link, Apple Pay, Google Pay suelen venir On por
-   defecto y aparecen solos si el navegador del comprador los soporta — no
-   hace falta tocar código para esto).
-6. **Para activar cuenta real y que la plata te llegue a un banco**:
-   Settings → Business settings → Account details, y completá identidad +
-   cuenta bancaria. Ahí Stripe empieza a liquidar de verdad.
-7. Cuando pases de test a producción, repetí los pasos 3 y 4 con las claves
-   `sk_live_...` / el webhook en modo live (son claves y endpoints
-   *distintos* de los de test).
+Gumroad es un *Merchant of Record*: vende el producto en tu nombre, cobra
+la tarjeta internacional y entrega el archivo — no pasa por `/api/*` ni por
+Vercel Blob para nada, es 100% externo al repo.
 
-## 2. Mercado Pago
+1. Cuenta en [gumroad.com](https://gumroad.com) con mail personal — no
+   hace falta empresa. Pide DNI (identificación con foto) y un comprobante
+   de domicilio en Argentina (o empresa registrada, una cosa u otra).
+2. **Payout method**: Bank Account (no PayPal, así no se lleva un 2% extra
+   de comisión aparte) → cargar CBU + nombre exacto de la cuenta. Account
+   type: Individual.
+3. Crear el producto (precio, descripción, subir el archivo real del LUT)
+   y copiar el link de la página (`Products` → el producto → *Share*).
+4. Ese link va en `gumroadUrl` del producto correspondiente, en
+   `shop-app/src/data/products.ts` — es lo único que conecta la Shop con
+   Gumroad, no hace falta ninguna env var ni clave.
+
+Comisión: 10% + 50¢ de Gumroad + 2,9% + 30¢ de la tarjeta en ventas
+directas — más alto que Stripe, pero es lo que sale por no necesitar una
+empresa en el exterior.
+
+## 2. Mercado Pago (implementado, en espera)
 
 > Ojo con esto: una cuenta de Mercado Pago de Argentina normalmente solo
-> cobra en **pesos**, no en dólares — a diferencia de Stripe, MP no es
-> multi-moneda. El código ya convierte el precio en USD a ARS al momento
+> cobra en **pesos**, no en dólares — no es multi-moneda. El código ya
+> convierte el precio en USD a ARS al momento
 > de generar el pago (`api/create-mp-preference.js`, cotización oficial de
 > [dolarapi.com](https://dolarapi.com) con un valor fijo de respaldo). Es
 > una aproximación razonable pero conviene probarla con la cuenta real
@@ -60,12 +56,13 @@ modo test sin cuenta bancaria vinculada, y sumar Mercado Pago después.
    dolarapi.com no responde. Actualizalo cada tanto — no tiene que ser
    exacto al centavo, es solo la red de contención.
 
-## 3. Vercel Blob (donde vive cada archivo pago)
+## 3. Vercel Blob (solo si se reactiva Mercado Pago)
 
-Los LUTs pagos **no** van dentro del repo — el repo de GitHub es público,
-así que cualquiera podría bajarlos directo del código sin pagar. En cambio
-viven en Vercel Blob, y solo `/api/download` (después de confirmar el pago)
-sabe dónde están.
+Esto no aplica a Gumroad — ahí el archivo se sube directo a Gumroad y ellos
+lo entregan. Es para el día que se reactive Mercado Pago: los LUTs pagos
+**no** van dentro del repo (el repo de GitHub es público, cualquiera podría
+bajarlos directo del código sin pagar) — viven en Vercel Blob, y solo
+`/api/download` (después de confirmar el pago) sabe dónde están.
 
 1. Vercel Dashboard → tu proyecto → **Storage** → *Create Database* → *Blob*.
    Al conectarlo, Vercel agrega solo la env var `BLOB_READ_WRITE_TOKEN` al
@@ -88,26 +85,27 @@ sabe dónde están.
 
 ## 4. Probar antes de anunciar
 
-- Con las claves de **test** de Stripe (`sk_test_...`) podés pagar con la
-  tarjeta de prueba `4242 4242 4242 4242`, cualquier fecha futura y CVC.
-  Confirmá que después de pagar la descarga arranca sola.
-- Mercado Pago tiene su propio [modo de prueba con usuarios y tarjetas de
+- **Gumroad**: probá el checkout real con tu propia tarjeta (Gumroad no
+  tiene modo test) y confirmá que el archivo que se descarga es el
+  correcto — es la única verificación que hace falta, no depende de nada
+  del repo.
+- Si se reactiva Mercado Pago, tiene su propio [modo de prueba con
+  usuarios y tarjetas de
   test](https://www.mercadopago.com.ar/developers/es/docs/checkout-pro/additional-content/your-integrations/test/cards) —
-  usalo antes de cargar las credenciales de producción.
-- Local: `npm run build` en `shop-app/` + copiar `dist/` a
-  `proyectos/shop/` no alcanza para probar pagos, porque hace falta que
-  corran las funciones de `/api`. Para eso, desde la raíz del repo:
-  `npx vercel dev` (pide login a Vercel la primera vez) — así corre el
-  sitio completo con las funciones serverless activas, como en producción.
+  usalo antes de cargar las credenciales de producción. Local: `npm run
+  build` en `shop-app/` + copiar `dist/` a `proyectos/shop/` no alcanza
+  para probarlo, porque hace falta que corran las funciones de `/api` —
+  para eso, desde la raíz del repo: `npx vercel dev` (pide login a Vercel
+  la primera vez).
 
 ## 5. Qué falta a futuro (no bloquea nada de lo anterior)
 
-- **Pedir el mail antes de descargar** (gratis y pagos): con Stripe y
-  Mercado Pago, el comprador ya deja su mail al pagar — eso ya está. Lo
-  que falta es el mail para el LUT **gratis**, que hoy se descarga directo
-  sin pedir nada. Cuando quieran sumarlo, es un formulario chico + un
-  endpoint que guarda el mail antes de destrabar el link — no toca nada
-  de lo que ya está armado acá.
+- **Pedir el mail antes de descargar** (gratis): comprando en Gumroad (o
+  Mercado Pago, si se reactiva) el comprador ya deja su mail al pagar —
+  eso ya está. Lo que falta es el mail para el LUT **gratis**, que hoy se
+  descarga directo sin pedir nada. Cuando quieran sumarlo, es un
+  formulario chico + un endpoint que guarda el mail antes de destrabar el
+  link — no toca nada de lo que ya está armado acá.
 - **Pagos que tardan en aprobarse** (Rapipago, Pago Fácil, transferencia en
   Mercado Pago): la descarga automática funciona perfecto para pagos que
   se aprueban al toque (tarjeta, wallet). Para los que tardan días, el

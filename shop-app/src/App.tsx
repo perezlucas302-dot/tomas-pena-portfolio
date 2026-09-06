@@ -17,9 +17,10 @@ type PaymentReturnState = {
   downloadUrl?: string
 } | null
 
-/** Lee ?checkout=... de la URL al volver de Stripe/Mercado Pago y arma lo
- *  que necesita <PaymentReturn />. Limpia la URL después para que un
- *  refresh no vuelva a disparar la descarga. */
+/** Lee ?checkout=... de la URL al volver de Mercado Pago (si se reactiva)
+ *  y arma lo que necesita <PaymentReturn />. Limpia la URL después para
+ *  que un refresh no vuelva a disparar la descarga. Gumroad (la vía real
+ *  hoy) no pasa por acá — entrega el archivo directo, sin volver al sitio. */
 function readPaymentReturn(): PaymentReturnState {
   const params = new URLSearchParams(window.location.search)
   const checkout = params.get('checkout')
@@ -29,16 +30,8 @@ function readPaymentReturn(): PaymentReturnState {
   const product = productId ? PRODUCTS.find((p) => p.id === productId) : undefined
 
   let downloadUrl: string | undefined
-  if (checkout === 'success' && productId) {
-    const provider = params.get('provider')
-    if (provider === 'stripe' || provider === 'mp') {
-      downloadUrl = buildDownloadUrl({
-        provider,
-        productId,
-        sessionId: params.get('session_id'),
-        paymentId: params.get('payment_id'),
-      })
-    }
+  if (checkout === 'success' && productId && params.get('provider') === 'mp') {
+    downloadUrl = buildDownloadUrl({ productId, paymentId: params.get('payment_id') })
   }
 
   window.history.replaceState({}, '', window.location.pathname)

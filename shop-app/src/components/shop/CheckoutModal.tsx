@@ -8,7 +8,7 @@ interface CheckoutModalProps {
   onClose: () => void
 }
 
-type Provider = 'stripe' | 'mp'
+type Provider = 'mp'
 
 // Mercado Pago sigue implementado (backend y lógica intactos) pero el botón
 // queda oculto hasta decidir con el cliente si se usa. Poner en `true` para
@@ -24,8 +24,7 @@ export function CheckoutModal({ product, onClose }: CheckoutModalProps) {
     setError(null)
     setLoading(provider)
     try {
-      const endpoint = provider === 'stripe' ? '/api/create-checkout-session' : '/api/create-mp-preference'
-      const res = await fetch(endpoint, {
+      const res = await fetch('/api/create-mp-preference', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ productId: product.id }),
@@ -115,14 +114,16 @@ export function CheckoutModal({ product, onClose }: CheckoutModalProps) {
               )
             ) : (
               <div className="flex flex-col gap-3">
-                <button
-                  type="button"
-                  disabled={loading !== null}
-                  onClick={() => pay('stripe')}
-                  className="w-full rounded-full bg-ink px-5 py-3 font-mono text-[12px] font-medium tracking-[0.08em] text-bg uppercase transition-opacity duration-300 ease-site hover:opacity-85 disabled:cursor-wait disabled:opacity-60"
-                >
-                  {loading === 'stripe' ? 'Redirigiendo…' : 'Pagar con Stripe'}
-                </button>
+                {product.gumroadUrl && (
+                  <a
+                    href={product.gumroadUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block w-full rounded-full bg-ink px-5 py-3 text-center font-mono text-[12px] font-medium tracking-[0.08em] text-bg uppercase transition-opacity duration-300 ease-site hover:opacity-85"
+                  >
+                    Comprar en Gumroad
+                  </a>
+                )}
                 {SHOW_MERCADOPAGO && (
                   <button
                     type="button"
@@ -131,6 +132,15 @@ export function CheckoutModal({ product, onClose }: CheckoutModalProps) {
                     className="w-full rounded-full border border-ink-faint px-5 py-3 font-mono text-[12px] font-medium tracking-[0.08em] text-ink uppercase transition-colors duration-300 ease-site hover:border-rec hover:text-rec disabled:cursor-wait disabled:opacity-60"
                   >
                     {loading === 'mp' ? 'Redirigiendo…' : 'Pagar con Mercado Pago'}
+                  </button>
+                )}
+                {!product.gumroadUrl && !SHOW_MERCADOPAGO && (
+                  <button
+                    type="button"
+                    disabled
+                    className="w-full cursor-not-allowed rounded-full bg-ink px-5 py-3 font-mono text-[12px] font-medium tracking-[0.08em] text-bg uppercase opacity-40"
+                  >
+                    Todavía no está a la venta
                   </button>
                 )}
               </div>
@@ -143,7 +153,9 @@ export function CheckoutModal({ product, onClose }: CheckoutModalProps) {
                 ? product.downloadUrl
                   ? 'Descarga directa — sin registro'
                   : 'Todavía no está listo para descargar'
-                : 'Pago seguro — el LUT se descarga solo al aprobarse'}
+                : product.gumroadUrl
+                  ? 'Se abre en Gumroad — el archivo llega ahí y por mail'
+                  : 'Pago seguro — el LUT se descarga solo al aprobarse'}
             </p>
           </motion.div>
         </motion.div>
