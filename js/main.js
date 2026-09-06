@@ -302,6 +302,21 @@ document.addEventListener('DOMContentLoaded', () => {
   const featured = document.getElementById('featured');
   if (!featured) return;
 
+  // El fondo blureado no reproduce el video: solo se queda en un frame fijo
+  // (bastante avanzado como para no agarrar un fade-in a negro del inicio).
+  // Corre siempre, incluso con reduced motion, porque no es una animación,
+  // es el fondo estático de la sección.
+  const bgVideo = featured.querySelector('.featured__media-bg');
+  if (bgVideo) {
+    bgVideo.addEventListener(
+      'loadeddata',
+      () => {
+        try { bgVideo.currentTime = 0.3; } catch { /* noop */ }
+      },
+      { once: true },
+    );
+  }
+
   const media = featured.querySelector('.featured__media');
   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   if (reduced || !media) return;
